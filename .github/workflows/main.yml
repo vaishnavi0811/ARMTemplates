@@ -27,7 +27,7 @@ jobs:
         with:
           # ARM Template file path to run the test. It can be either a directory or single file.
           path: storageaccount
-          files: template.json
+          
       - name: Test result - files
         shell: bash
         continue-on-error: true
