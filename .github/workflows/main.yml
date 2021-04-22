@@ -9,40 +9,24 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Check the directory
-        run: ls
       - name: login to Azure
         run: az login --service-principal --username ${{ secrets.AZ_USER_NAME }} --password ${{ secrets.AZ_PASSWORD }} --tenant ${{ secrets.AZ_TENANT_ID }}
       - name: ARM Template Toolkit (ARM TTK)
-        # You may pin to the exact commit or the version.
-        # uses: aliencube/arm-ttk-actions@6fa8c0ad67d034f6e274d5276fb492f7d263ae4a
         uses: aliencube/arm-ttk-actions@v0.3
         with:
-          # ARM Template file path to run the test. It can be either a directory or single file.
           path: storageaccount
           tests: '"apiVersions Should Be Recent","Resources Should Have Location"'
       - name: Deploy Azure Resource Manager (ARM) Template
         uses: Azure/arm-deploy@v1
-        with:
-          # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
+        with:        
           scope: resourcegroup
-          subscriptionId: 3dc3cd1a-d5cd-4e3e-a648-b2253048af83
-          # Provide the name of a resource group, only required for resource Group deployments.
-          resourceGroupName: 32943
-          # Specify the path or URL to the Azure Resource Manager template.
+          subscriptionId: 3dc3cd1a-d5cd-4e3e-a648-b2253048af83         
+          resourceGroupName: 32943      
           template: storageaccount/mainTemplate.json
-          # Incremental (only add resources to resource group) or Complete (remove extra resources from resource group) or Validate (only validates the template).
           deploymentMode: Incremental
-          # Specifies the name of the resource group deployment to create.
           deploymentName: deployStorage
-          # Supply deployment parameter values.
           parameters: storageaccount/parameters.json
