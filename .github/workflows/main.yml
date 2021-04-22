@@ -29,6 +29,7 @@ jobs:
         with:
           # ARM Template file path to run the test. It can be either a directory or single file.
           path: storageaccount
+          tests: '"apiVersions Should Be Recent","Resources Should Have Location"'
       - name: Deploy Azure Resource Manager (ARM) Template
         uses: Azure/arm-deploy@v1
         with:
