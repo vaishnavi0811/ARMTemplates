@@ -21,7 +21,7 @@ jobs:
       - name: Check the directory
         run: ls
       - name: login to Azure
-        run: az login --service-principal --username ${{ secrets.AZ_USER_NAME }} --password ${{ secrets.AZ_PASSWORD }} --tenant ${ secrets.AZ_TENANT_ID }
+        run: az login --service-principal --username ${{ secrets.AZ_USER_NAME }} --password ${{ secrets.AZ_PASSWORD }} --tenant ${{ secrets.AZ_TENANT_ID }}
       - name: ARM Template Toolkit (ARM TTK)
         # You may pin to the exact commit or the version.
         # uses: aliencube/arm-ttk-actions@6fa8c0ad67d034f6e274d5276fb492f7d263ae4a
