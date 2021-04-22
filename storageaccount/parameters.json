@@ -6,7 +6,7 @@
             "value": "southindia"
         },
         "storageAccountName": {
-            "value": "cloudlego"
+            "value": "cloudlegonewstorage"
         },
         "accountType": {
             "value": "Standard_LRS"
