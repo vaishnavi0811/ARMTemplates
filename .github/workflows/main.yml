@@ -6,11 +6,15 @@ on:
         default: '32943'
         description: 'Resource group name'
         required: true
+      storageaccount_name:
+        default: 'cloudlegonewstorage'
+        description: 'Storage account name'
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
       - name: login to Azure
@@ -25,8 +29,16 @@ jobs:
         with:        
           scope: resourcegroup
           subscriptionId: 3dc3cd1a-d5cd-4e3e-a648-b2253048af83         
-          resourceGroupName: 32943      
+          resourceGroupName: ${{ inputs.resourcegroup_name }}    
           template: storageaccount/mainTemplate.json
           deploymentMode: Incremental
           deploymentName: deployStorage
           parameters: storageaccount/parameters.json
+      - name: pester-tests-report
+        uses: zyborg/pester-tests-report@v1.5.0
+        with:
+          test_results_path: Tests
+          full_names_filters: Tests
+          output_level: diagnostic
+          coverage_paths: Tests
+          tests_fail_step: true
