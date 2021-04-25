@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: get dir contents
+        run: dir
       - name: login to Azure
         run: az login --service-principal --username ${{ secrets.AZ_USER_NAME }} --password ${{ secrets.AZ_PASSWORD }} --tenant ${{ secrets.AZ_TENANT_ID }}
       - name: ARM Template Toolkit (ARM TTK)
