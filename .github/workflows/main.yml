@@ -1,4 +1,4 @@
-name: CI
+name: Build Infra
 on:
   workflow_dispatch:
     inputs:
@@ -29,11 +29,15 @@ jobs:
         with:        
           scope: resourcegroup
           subscriptionId: 3dc3cd1a-d5cd-4e3e-a648-b2253048af83         
-          resourceGroupName: ${{ inputs.resourcegroup_name }}    
+          resourceGroupName: ${{ github.event.inputs.resourcegroup_name }}    
           template: storageaccount/mainTemplate.json
           deploymentMode: Incremental
           deploymentName: deployStorage
           parameters: storageaccount/parameters.json
+      - name: PowerShell script
+        uses: Amadevus/pwsh-script@v2.0.1
+        with:
+          script: Invoke-Pester -Script @{Path='Tests/storageaccount.Tests.ps1'; Parameters = @{rgName = ${{ github.event.inputs.resourcegroup_name }};storageName= ${{ github.event.inputs.storageaccount_name }}}} -CodeCoverage Tests/storageaccount.Tests.ps1
       - name: pester-tests-report
         uses: zyborg/pester-tests-report@v1.5.0
         with:
